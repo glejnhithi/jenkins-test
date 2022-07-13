@@ -3,17 +3,17 @@ pipeline{
     
     stages{
         
-        stage("Buil"){
+        stage("buil"){
             steps{
                 echo 'built the git and jenkins'
             }
         }
-        stage("Test"){
+        stage("test"){
             steps{
                 echo 'test the git and jenkins'
             }
         }
-        stage("Deploy"){
+        stage("deploy"){
             steps{
                 echo 'Deploy the git and jenkins'
             }
