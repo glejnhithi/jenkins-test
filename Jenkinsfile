@@ -3,9 +3,9 @@ pipeline{
     
     stages{
         
-        stage("buil"){
+        stage("TF Version"){
             steps{
-                echo 'built the git and jenkins'
+                sh 'terraform version'
             }
         }
         stage("test"){
