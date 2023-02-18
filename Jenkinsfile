@@ -1,31 +1,61 @@
-pipeline {
-  agent any
-  options {
-    buildDiscarder(logRotator(numToKeepStr: '5'))
-  }
-  environment {
-    DOCKERHUB_CREDENTIALS = credentials('docker_hub')
-  }
-  stages {
-    stage('Build') {
-      steps {
-        sh 'docker build -t glejnhithi/jenkins-docker-hub .'
-      }
+pipeline { 
+2
+    environment { 
+3
+        registry = "glejnhithi/jenkins-push" 
+4
+        registryCredential = 'docker_hub' 
+5
+        dockerImage = '' 
+6
     }
-    stage('Login') {
-      steps {
-        sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
-      }
+7
+    agent any 
+8
+    stages { 
+14
+        stage('Building our image') { 
+15
+            steps { 
+16
+                script { 
+17
+                    dockerImage = docker.build registry + ":$BUILD_NUMBER" 
+18
+                }
+19
+            } 
+20
+        }
+21
+        stage('Deploy our image') { 
+22
+            steps { 
+23
+                script { 
+24
+                    docker.withRegistry( '', registryCredential ) { 
+25
+                        dockerImage.push() 
+26
+                    }
+27
+                } 
+28
+            }
+29
+        } 
+30
+        stage('Cleaning up') { 
+31
+            steps { 
+32
+                sh "docker rmi $registry:$BUILD_NUMBER" 
+33
+            }
+34
+        } 
+35
     }
-    stage('Push') {
-      steps {
-        sh 'docker push glejnhithi/jenkins-docker-hub'
-      }
-    }
-  }
-  post {
-    always {
-      sh 'docker logout'
-    }
-  }
+36
 }
