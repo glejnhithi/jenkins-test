@@ -8,7 +8,7 @@ pipeline {
   stages {
     stage('Cloning Git') {
       steps {
-        git 'https://github.com/glejnhithi/jenkins-test.git' 
+        git branch: 'main', url:  'https://github.com/glejnhithi/jenkins-test.git' 
       }
     }
     stage('Building image') {
