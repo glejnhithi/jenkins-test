@@ -1,1 +1,1 @@
-FROM alpine:3.13.5
+FROM jenkins/jenkins:2.332.3-jdk11
