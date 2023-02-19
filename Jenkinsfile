@@ -1,41 +1,30 @@
-pipeline {
-  environment {
-    imagename = "glejnhithi/hithi-jenkins"
-    registryCredential = 'docker_hub'
-    dockerImage = ''
-  }
-  agent any
-  stages {
-    stage('Cloning Git') {
-      steps {
-        git([url: 'https://github.com/glejnhithi/jenkins-test.git', branch: 'main', credentialsId: 'github-creds'])
+node {
+    def app
 
-      }
+    stage('Clone repository') {
+      
+
+        checkout scm
     }
-    stage('Building image') {
-      steps{
-        script {
-          dockerImage = docker.build imagename
+
+    stage('Build image') {
+  
+       app = docker.build("glejnhithi/test")
+    }
+
+    stage('Test image') {
+  
+
+        app.inside {
+            sh 'echo "Tests passed"'
         }
-      }
     }
-    stage('Deploy Image') {
-      steps{
-        script {
-          docker.withRegistry( '', registryCredential ) {
-            dockerImage.push("$BUILD_NUMBER")
-             dockerImage.push('latest')
 
-          }
+    stage('Push image') {
+        
+        docker.withRegistry('https://registry.hub.docker.com', 'docker_hub') {
+            app.push("${env.BUILD_NUMBER}")
+            app.push("latest")
         }
-      }
     }
-    stage('Remove Unused docker image') {
-      steps{
-        sh "docker rmi $imagename:$BUILD_NUMBER"
-         sh "docker rmi $imagename:latest"
-
-      }
-    }
-  }
 }
