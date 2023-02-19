@@ -1,1 +1,1 @@
-FROM jenkins/jenkins:2.332.3-jdk11
+FROM jenkins/jenkins:2.375.3-jdk11
