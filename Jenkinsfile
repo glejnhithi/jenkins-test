@@ -1,30 +1,40 @@
-pipeline{
-    agent any
-    options{
-        buildDiscarder(logRotator(numToKeepStr: '5', daysToKeepStr: '5'))
-        timestamps()
+pipeline {
+  environment {
+    imagename = "glejnhithi/jenkins-bp"
+    registryCredential = 'docker_hub'
+    dockerImage = ''
+  }
+  agent any
+  stages {
+    stage('Cloning Git') {
+      steps {
+        git([url: 'https://github.com/glejnhithi/jenkins-test.git', branch: 'main', credentialsId: 'github_creds'])
+ 
+      }
     }
-    environment{
-        
-        registry = "glejnhithi/jeknkins-bp"
-        registryCredential = 'docker_hub'        
-    }
-    
-    stages{
-       stage('Building image') {
+    stage('Building image') {
       steps{
         script {
-          dockerImage = docker.build registry + ":$BUILD_NUMBER"
+          dockerImage = docker.build imagename
         }
       }
     }
-       stage('Deploy Image') {
+    stage('Deploy Image') {
       steps{
-         script {
-            docker.withRegistry( '', registryCredential ) {
-            dockerImage.push()
+        script {
+          docker.withRegistry( '', registryCredential ) {
+            dockerImage.push("$BUILD_NUMBER")
+             dockerImage.push('latest')
           }
         }
       }
     }
+    stage('Remove Unused docker image') {
+      steps{
+        sh "docker rmi $imagename:$BUILD_NUMBER"
+         sh "docker rmi $imagename:latest"
+ 
+      }
+    }
+  }
 }
