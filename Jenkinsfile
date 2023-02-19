@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 node {
     def app
 
@@ -5,6 +6,20 @@ node {
         /* Let's make sure we have the repository cloned to our workspace */
 
         checkout scm
+=======
+pipeline {
+  agent {label'docker-agent-alpine'}
+  environment {
+    imagename = "glejnhithi/jenkins-bp"
+    registryCredential = 'docker_hub'
+    dockerImage = ''
+  }
+  stages {
+    stage('Cloning Git') {
+      steps {
+        git branch: 'main', url:  'https://github.com/glejnhithi/jenkins-test.git' 
+      }
+>>>>>>> b5931cd5d4467ec1c91866f34558f801a148580d
     }
 
     stage('Build image') {
@@ -33,4 +48,16 @@ node {
             app.push("latest")
         }
     }
+<<<<<<< HEAD
 }
+=======
+    stage('Remove Unused docker image') {
+      steps{
+        sh "docker rmi $imagename:$BUILD_NUMBER"
+         sh "docker rmi $imagename:latest"
+ 
+      }
+    }
+  }
+}
+>>>>>>> b5931cd5d4467ec1c91866f34558f801a148580d
