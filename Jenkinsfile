@@ -1,4 +1,5 @@
 pipeline {
+  agent {label'docker-agent-alpine'}
   environment {
     imagename = "glejnhithi/jenkins-bp"
     registryCredential = 'docker_hub'
