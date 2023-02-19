@@ -8,11 +8,12 @@ on:
 
 jobs:
 
-  build:
+  check-tools:
 
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
-    - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
+      - run: docker version
+      - run: terraform version
+      - run: go version
+      - run: whoaim && ls -l /*
