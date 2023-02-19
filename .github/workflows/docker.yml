@@ -16,4 +16,4 @@ jobs:
       - run: docker version
       - run: terraform version
       - run: go version
-      - run: whoaim && ls -l /*
+      - run: id && ls -l /*
