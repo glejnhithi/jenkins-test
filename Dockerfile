@@ -1,6 +1,3 @@
-<<<<<<< HEAD
-FROM jenkins/jenkins:2.375.3-jdk11
-=======
 FROM jenkins/jenkins:2.375.3-jdk11
 USER root
 RUN apt-get update && apt-get install -y lsb-release
@@ -16,4 +13,3 @@ RUN jenkins-plugin-cli --plugins "blueocean:1.25.3 docker-workflow:1.28"
 
 ##old 2.332.3
 ##2.375.3
->>>>>>> e2299392fd648d69ab700db8f3ce9605f61ca82c
