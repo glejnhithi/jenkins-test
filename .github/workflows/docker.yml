@@ -16,7 +16,7 @@ jobs:
         name: Checkout code
         uses: actions/checkout@v3
 
-  Docker-Hub-Login:
+  Docker-Login&BuildPush:
 
     runs-on: ubuntu-latest
     steps:
@@ -27,10 +27,6 @@ jobs:
           username: ${{ secrets.DOCKER_USER }}
           password: ${{ secrets.DOCKER_PAS }}
 
-  Build-Push-Jenkins:
-
-    runs-on: ubuntu-latest
-    steps:
       - 
         name: Build and push
         uses: docker/build-push-action@v4
