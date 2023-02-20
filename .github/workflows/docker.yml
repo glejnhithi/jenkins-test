@@ -11,7 +11,7 @@ jobs:
   check-tools:
 
     runs-on: ubuntu-latest
-    container: terraform:1.2.6
+    container: terraform:1.3.5
 
     steps:
       - run: docker version
